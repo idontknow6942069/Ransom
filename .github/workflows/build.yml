@@ -30,8 +30,17 @@ jobs:
     - name: Publish the project
       run: dotnet publish --configuration Release --output ./output --self-contained --runtime win-x64
 
+    - name: Check output folder
+      run: |
+        if (Test-Path "./output") {
+          Write-Host "Output folder exists!"
+        } else {
+          Write-Host "Output folder not found!"
+          exit 1
+        }
+
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
       with:
         name: MyApp-Exe
-        path: ./output/**  # Use a wildcard to include all files in the output folder
+        path: ./output/*
