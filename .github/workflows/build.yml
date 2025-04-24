@@ -3,23 +3,23 @@ name: Build C# Project and Publish .exe
 on:
   push:
     branches:
-      - main  # Trigger action when pushing to the main branch
+      - main
   pull_request:
     branches:
-      - main  # Trigger action when creating pull requests to the main branch
+      - main
 
 jobs:
   build:
-    runs-on: windows-latest  # This tells GitHub to use a Windows runner
+    runs-on: windows-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
     - name: Set up .NET SDK
-      uses: actions/setup-dotnet@v3  # Updated to v3
+      uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '7.0'  # Change this to the version you're using
+        dotnet-version: '7.0'
 
     - name: Restore dependencies
       run: dotnet restore
@@ -33,5 +33,5 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: drainer-Exe
-        path: ./output
+        name: MyApp-Exe
+        path: ./output/**  # Use a wildcard to include all files in the output folder
