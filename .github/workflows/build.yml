@@ -1,0 +1,37 @@
+name: Build C# Project and Publish .exe
+
+on:
+  push:
+    branches:
+      - main  # Trigger action when pushing to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger action when creating pull requests to the main branch
+
+jobs:
+  build:
+    runs-on: windows-latest  # This tells GitHub to use a Windows runner
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up .NET SDK
+      uses: actions/setup-dotnet@v3  # Updated to v3
+      with:
+        dotnet-version: '7.0'  # Change this to the version you're using
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build the project
+      run: dotnet build --configuration Release
+
+    - name: Publish the project
+      run: dotnet publish --configuration Release --output ./output --self-contained --runtime win-x64
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: drainer-Exe
+        path: ./output
